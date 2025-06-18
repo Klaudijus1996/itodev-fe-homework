@@ -1,8 +1,3 @@
-import axios from 'axios';
+import * as events from './events';
 
-export const eventsApi = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/api/v1/events`,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+export { events };
