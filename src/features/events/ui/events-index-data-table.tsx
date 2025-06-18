@@ -42,8 +42,6 @@ export function EventsIndexDataTable() {
   const [rowSelection, setRowSelection] = React.useState({});
   const [search, setSearch] = React.useState('');
   const [debouncedSearch, setDebouncedSearch] = React.useState('');
-
-  console.log({ sorting });
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
@@ -99,7 +97,7 @@ export function EventsIndexDataTable() {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center gap-4 py-4 md:flex-row">
         <Input
           placeholder="Search events..."
           value={search}
@@ -131,6 +129,7 @@ export function EventsIndexDataTable() {
                     className="capitalize"
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                    onSelect={(e) => e.preventDefault()}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>

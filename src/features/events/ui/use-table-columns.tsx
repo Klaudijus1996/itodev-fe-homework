@@ -18,6 +18,7 @@ const columns: ColumnDef<EventResponse>[] = [
     cell: ({ row }) => (
       <div className="max-w-44 truncate capitalize md:max-w-none">{row.getValue('name')}</div>
     ),
+    enableHiding: false,
   },
   {
     accessorKey: 'date',
