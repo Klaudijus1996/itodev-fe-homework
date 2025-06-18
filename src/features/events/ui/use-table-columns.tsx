@@ -15,7 +15,9 @@ const columns: ColumnDef<EventResponse>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => <SortableColumnHeader column={column}>Name</SortableColumnHeader>,
-    cell: ({ row }) => <div className="capitalize">{row.getValue('name')}</div>,
+    cell: ({ row }) => (
+      <div className="max-w-44 truncate capitalize md:max-w-none">{row.getValue('name')}</div>
+    ),
   },
   {
     accessorKey: 'date',
