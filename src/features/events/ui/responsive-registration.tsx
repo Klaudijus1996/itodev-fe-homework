@@ -20,6 +20,7 @@ export function ResponsiveRegistration({
 }: ResponsiveRegistrationProps) {
   const [isMobile, setIsMobile] = React.useState(false);
 
+  // TODO: use media query
   React.useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 768); // md breakpoint

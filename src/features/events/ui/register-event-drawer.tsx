@@ -42,7 +42,7 @@ export function RegisterEventDrawer({
     <Drawer open={open} onOpenChange={setOpen} {...drawerProps}>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent>
-        <div className="max-h-[80vh] overflow-y-auto">
+        <div className="mx-auto w-full max-w-sm overflow-y-auto">
           <DrawerHeader>
             <DrawerTitle>Register for Event</DrawerTitle>
             <DrawerDescription className={'flex flex-col items-center gap-2'}>

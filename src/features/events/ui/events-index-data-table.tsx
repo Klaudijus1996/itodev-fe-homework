@@ -9,7 +9,7 @@ import {
   useReactTable,
   type VisibilityState,
 } from '@tanstack/react-table';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -33,6 +33,8 @@ import debounce from 'lodash/debounce';
 import { useTableColumns } from './use-table-columns';
 import React from 'react';
 import { keepPreviousData } from '@tanstack/react-query';
+
+const pageSizeOptions = [10, 20, 50, 100];
 
 export function EventsIndexDataTable() {
   const columns = useTableColumns();
@@ -182,7 +184,7 @@ export function EventsIndexDataTable() {
         </div>
       )}
 
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex flex-wrap items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
           {(() => {
             const total = query.data?.data.meta.total ?? 0;
@@ -191,6 +193,32 @@ export function EventsIndexDataTable() {
             return `Showing ${start}-${end} of ${total}`;
           })()}
         </div>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">
+              <p className={'hidden sm:inline'}>Show items:</p> {pagination.pageSize}
+              <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {pageSizeOptions.map((size) => (
+              <DropdownMenuCheckboxItem
+                key={size}
+                checked={pagination.pageSize === size}
+                onCheckedChange={() => {
+                  setPagination({
+                    pageIndex: 0,
+                    pageSize: size,
+                  });
+                }}
+              >
+                {size} per page
+              </DropdownMenuCheckboxItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -198,7 +226,7 @@ export function EventsIndexDataTable() {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage() || query.isPending}
           >
-            Previous
+            <ChevronLeft />
           </Button>
           <Button
             variant="outline"
@@ -206,7 +234,7 @@ export function EventsIndexDataTable() {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage() || query.isPending}
           >
-            Next
+            <ChevronRight />
           </Button>
         </div>
       </div>
