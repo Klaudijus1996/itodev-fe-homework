@@ -58,7 +58,7 @@ const columns: ColumnDef<EventResponse>[] = [
 
       return (
         <ResponsiveRegistration
-          eventId={event.id}
+          event={event}
           onSuccess={handleSuccess}
           onError={handleError}
           className="h-8 w-8 p-0"

@@ -7,9 +7,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { RegisterToEventForm } from './register-to-event-form';
+import { DialogDescription } from '@radix-ui/react-dialog';
+import type { EventResponse } from '@/lib/services/api/events';
+import { Badge } from '@/components/ui/badge';
 
 interface RegisterEventDialogProps {
-  eventId: number;
+  event: EventResponse;
   children: React.ReactNode;
   onSuccess?: () => void;
   onError?: (error: any) => void;
@@ -18,7 +21,7 @@ interface RegisterEventDialogProps {
 }
 
 export function RegisterEventDialog({
-  eventId,
+  event,
   children,
   onSuccess,
   onError,
@@ -41,8 +44,26 @@ export function RegisterEventDialog({
       <DialogContent className="max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Register for Event</DialogTitle>
+          <DialogDescription className={'flex flex-col gap-2'}>
+            <span className={'inline-flex gap-2'}>
+              Date:{' '}
+              <b className={'font-medium'}>
+                {new Date(event.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: 'numeric',
+                })}
+              </b>
+            </span>
+            <span className={'inline-flex gap-2'}>
+              Location: <b className={'font-medium'}>{event.location}</b>
+            </span>
+            <span className={'inline-flex gap-2'}>
+              Available spots: <Badge>{event.available_spots}</Badge>
+            </span>
+          </DialogDescription>
         </DialogHeader>
-        <RegisterToEventForm eventId={eventId} onSuccess={handleSuccess} onError={handleError} />
+        <RegisterToEventForm eventId={event.id} onSuccess={handleSuccess} onError={handleError} />
       </DialogContent>
     </Dialog>
   );

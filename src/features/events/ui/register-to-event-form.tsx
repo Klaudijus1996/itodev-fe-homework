@@ -18,6 +18,7 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { useRegisterToEventMutation } from '@/features/events/use-register-to-event-mutation';
+import { useQueryClient } from '@tanstack/react-query';
 
 const registerSchema = z.object({
   name: z.string().min(1, 'Name is required').min(2, 'Name must be at least 2 characters'),
@@ -35,6 +36,7 @@ interface RegisterToEventFormProps {
 export function RegisterToEventForm({ eventId, onSuccess, onError }: RegisterToEventFormProps) {
   const [formError, setFormError] = React.useState<string | null>(null);
   const mutation = useRegisterToEventMutation();
+  const queryClient = useQueryClient();
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -49,6 +51,7 @@ export function RegisterToEventForm({ eventId, onSuccess, onError }: RegisterToE
 
     try {
       await mutation.mutateAsync([eventId, data]);
+      queryClient.invalidateQueries({ queryKey: ['events'] });
       toast.success('Successfully registered for the event!');
       form.reset();
       onSuccess?.();

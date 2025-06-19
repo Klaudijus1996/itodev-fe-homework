@@ -3,16 +3,17 @@ import { UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { RegisterEventDialog } from './register-event-dialog';
 import { RegisterEventDrawer } from './register-event-drawer';
+import type { EventResponse } from '@/lib/services/api/events';
 
 interface ResponsiveRegistrationProps {
-  eventId: number;
+  event: EventResponse;
   onSuccess?: () => void;
   onError?: (error: any) => void;
   className?: string;
 }
 
 export function ResponsiveRegistration({
-  eventId,
+  event,
   onSuccess,
   onError,
   className,
@@ -39,14 +40,14 @@ export function ResponsiveRegistration({
 
   if (isMobile) {
     return (
-      <RegisterEventDrawer eventId={eventId} onSuccess={onSuccess} onError={onError}>
+      <RegisterEventDrawer event={event} onSuccess={onSuccess} onError={onError}>
         {triggerButton}
       </RegisterEventDrawer>
     );
   }
 
   return (
-    <RegisterEventDialog eventId={eventId} onSuccess={onSuccess} onError={onError}>
+    <RegisterEventDialog event={event} onSuccess={onSuccess} onError={onError}>
       {triggerButton}
     </RegisterEventDialog>
   );

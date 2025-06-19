@@ -2,14 +2,17 @@ import * as React from 'react';
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { RegisterToEventForm } from './register-to-event-form';
+import type { EventResponse } from '@/lib/services/api/events';
+import { Badge } from '@/components/ui/badge';
 
 interface RegisterEventDrawerProps {
-  eventId: number;
+  event: EventResponse;
   children: React.ReactNode;
   onSuccess?: () => void;
   onError?: (error: any) => void;
@@ -18,7 +21,7 @@ interface RegisterEventDrawerProps {
 }
 
 export function RegisterEventDrawer({
-  eventId,
+  event,
   children,
   onSuccess,
   onError,
@@ -42,10 +45,28 @@ export function RegisterEventDrawer({
         <div className="max-h-[80vh] overflow-y-auto">
           <DrawerHeader>
             <DrawerTitle>Register for Event</DrawerTitle>
+            <DrawerDescription className={'flex flex-col items-center gap-2'}>
+              <span className={'inline-flex gap-2'}>
+                Date:{' '}
+                <b className={'font-medium'}>
+                  {new Date(event.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                  })}
+                </b>
+              </span>
+              <span className={'inline-flex gap-2'}>
+                Location: <b className={'font-medium'}>{event.location}</b>
+              </span>
+              <span className={'inline-flex gap-2'}>
+                Available spots: <Badge>{event.available_spots}</Badge>
+              </span>
+            </DrawerDescription>
           </DrawerHeader>
           <div className="px-4 pb-4">
             <RegisterToEventForm
-              eventId={eventId}
+              eventId={event.id}
               onSuccess={handleSuccess}
               onError={handleError}
             />
