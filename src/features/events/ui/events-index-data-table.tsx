@@ -131,7 +131,7 @@ export function EventsIndexDataTable() {
                     onCheckedChange={(value) => column.toggleVisibility(!!value)}
                     onSelect={(e) => e.preventDefault()}
                   >
-                    {column.id}
+                    {column.id.replace(/[_-]/g, ' ')}
                   </DropdownMenuCheckboxItem>
                 );
               })}

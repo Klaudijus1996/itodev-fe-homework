@@ -1,15 +1,8 @@
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { SortableColumnHeader } from '@/components/ui/sortable-column-header';
 import type { EventResponse } from '@/lib/services/api/events';
 import type { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
+import { ResponsiveRegistration } from '@/features/events/ui/responsive-registration';
+import { Badge } from '@/components/ui/badge';
 
 const columns: ColumnDef<EventResponse>[] = [
   {
@@ -39,24 +32,37 @@ const columns: ColumnDef<EventResponse>[] = [
     cell: ({ row }) => <span>{row.getValue('location')}</span>,
   },
   {
+    accessorKey: 'available_spots',
+    header: ({ column }) => (
+      <SortableColumnHeader column={column}>Available Spots</SortableColumnHeader>
+    ),
+    cell: ({ row }) => (
+      <div className={'flex w-full items-center justify-center'}>
+        <Badge>{row.getValue('available_spots')}</Badge>
+      </div>
+    ),
+  },
+  {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
       const event = row.original;
 
+      const handleSuccess = () => {
+        console.log('Successfully registered for event:', event.name);
+      };
+
+      const handleError = (error: any) => {
+        console.error('Failed to register for event:', event.name, error);
+      };
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => console.log({ event })}>Register</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <ResponsiveRegistration
+          eventId={event.id}
+          onSuccess={handleSuccess}
+          onError={handleError}
+          className="h-8 w-8 p-0"
+        />
       );
     },
   },
